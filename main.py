@@ -45,3 +45,19 @@ async def return_task(id: int):
         status_code = status.HTTP_404_NOT_FOUND,
         content = {"error": f"Task {id} was not found"}
     )
+
+@app.post("/tasks")
+async def new_task(task: dict):
+    task["title"] = task.get("title", "")
+    if not task["title"] or not task["title"].strip():
+        return JSONResponse(
+            status_code = status.HTTP_400_BAD_REQUEST,
+            content = {"error": "Task title cannot be empty"}
+        )
+    task["id"] = len(tasks) + 1
+    task["done"] = False
+    tasks.append(task)
+    return JSONResponse(
+        status_code = status.HTTP_201_CREATED,
+        content = task
+    )
