@@ -24,24 +24,24 @@ tasks = [
 ]
 
 # API description
-@app.get("/")
+@app.get("/", summary = "API Description")
 async def root():
     return {"name": "Task API", 
             "version": "1.0", 
             "endpoints": ["/tasks"] }
 
 # Check server status
-@app.get("/health")
+@app.get("/health", summary = "Check server health/status")
 async def health():
     return {"status": "ok"}
 
 # Return the entire list of tasks
-@app.get("/tasks")
+@app.get("/tasks", summary = "Return the entire list of tasks")
 async def get_tasks():
     return tasks
 
 # Return a task with a specific ID
-@app.get("/tasks/{id}")
+@app.get("/tasks/{id}", summary = "Return a task with a specific ID")
 async def return_task(id: int):
     for task in tasks:
         if task["id"] == id:
@@ -53,7 +53,7 @@ async def return_task(id: int):
     )
 
 # Create a new task
-@app.post("/tasks")
+@app.post("/tasks", summary = "Create a new task")
 async def new_task(task: dict):
     title = task.get("title", "")
     if not title or not title.strip():
@@ -78,7 +78,7 @@ async def new_task(task: dict):
     )
 
 # Update an existing task
-@app.put("/tasks/{id}")
+@app.put("/tasks/{id}", summary = "Update an existing task")
 async def update_task(id: int, updates: dict):
     # Make sure that there are updates to be done
     if not updates:
@@ -131,7 +131,7 @@ async def update_task(id: int, updates: dict):
     )
 
 # Delete an existing task
-@app.delete("/tasks/{id}")
+@app.delete("/tasks/{id}", summary = "Delete an existing task")
 async def delete_task(id: int):
     for task in tasks:
         if task["id"] == id:
